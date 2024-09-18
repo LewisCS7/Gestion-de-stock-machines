@@ -1,0 +1,108 @@
+<!-- app/templates/machines.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="card-header p-2 pl-3 pr-3 bg-primary text-white d-flex align-items-center justify-content-between">
+        <h1 class="h3 flex-grow-1 text-center">LISTE DES MACHINES</h1>
+    </div>
+
+    <br>
+
+    <div class="d-flex justify-content-between">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-database"></i>
+            </button>
+            <ul class="dropdown-menu text-center">
+                <li><a class="dropdown-item" href="{{ url_for('upload_file') }}">
+                    Mise à jour <i class="fas fa-sync"></i>
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ url_for('download') }}">
+                    Téléchargement <i class="fas fa-download"></i>
+                </a></li>
+            </ul>
+        </div>
+        
+        <form id="searchForm" action="{{ url_for('machines') }}" method="GET">
+            <select id="searchOption" name="search_option">
+                <!--<option value="id">N° MAS</option>-->
+                <option value="manufacturer">Fabricant</option>
+                <option value="machine_type">Type de MAS</option>
+                <option value="model">Modèle</option>
+                <option value="serial_number">N° Série</option>
+                <option value="year">Année Fab.</option>
+                <option value="programme">Programme</option>
+                <!--<option value="mise">Mise</option>-->
+                <option value="state">Etat</option>
+                <option value="commune">Commune</option>
+            </select>
+            <input id="searchInput" type="text" name="search_query" placeholder="Filtrage...">
+            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-filter"></i></button>
+        </form>
+    </div>    
+
+    <!--
+    <form action="{{ url_for('machines') }}" method="GET">
+        <input type="text" name="manufacturer" placeholder="Fabricant">
+        <input type="text" name="machine_type" placeholder="Type de MAS">
+        <input type="text" name="model" placeholder="Modèle">
+        <input type="text" name="serial_number" placeholder="N° Série">
+        <input type="text" name="year" placeholder="Année Fab.">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    -->
+
+    <br>
+
+    <div class="table-responsive small">
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">N° MAS</th>
+                    <th scope="col">Fabricant</th>
+                    <th scope="col">Type de MAS</th>
+                    <th scope="col">Modèle</th>
+                    <th scope="col">N° Série</th> 
+                    <th scope="col">Année Fab.</th>
+                    <th scope="col">Programme</th>
+                    <th scope="col">Mise</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Commune</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for machine in machines %}
+                <tr>
+                    <td>{{ machine.id }}</td>
+                    <td>{{ machine.manufacturer }}</td>
+                    <td>{{ machine.machine_type }}</td>
+                    <td>{{ machine.model }}</td>
+                    <td>{{ machine.serial_number }}</td>
+                    <td>{{ machine.year }}</td>
+                    <td>{{ machine.programme }}</td>
+                    <td>{{ machine.mise }}</td>
+                    <td>{{ machine.state }}</td>
+                    <td>{{ machine.commune }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le formulaire d'être soumis normalement
+    
+            var searchOption = document.getElementById('searchOption').value;
+            var searchQuery = document.getElementById('searchInput').value;
+    
+            // Construction de l'URL de recherche avec les paramètres choisis
+            var searchUrl = this.getAttribute('action') + '?' + searchOption + '=' + encodeURIComponent(searchQuery);
+            window.location.href = searchUrl; // Redirection vers la nouvelle URL de recherche
+        });
+    </script>
+    
+{% endblock %}

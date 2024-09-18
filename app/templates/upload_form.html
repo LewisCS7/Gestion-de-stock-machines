@@ -1,0 +1,28 @@
+<!-- app/templates/upload_form.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card-header p-2 pl-3 pr-3 bg-primary text-white d-flex align-items-center justify-content-between">
+        <h1 class="h3 flex-grow-1 text-center">Importation de données à partir d'un fichier Excel</h1>
+    </div>
+
+    <br><br>
+
+    <div style="text-align: center;">
+        {% if error %}
+            <div style="color: red;">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".xls,.xlsx">
+            
+            <button type="submit" class="btn btn-sm btn-outline-success">
+                <i class="fas fa-file-import"></i> Importer 
+            </button>
+        </form>
+    </div>
+
+
+{% endblock %}
+
